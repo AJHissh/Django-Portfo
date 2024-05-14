@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block body %}
+     <!-- Page content -->
+  <div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+      <div id='login-form' class="col-lg-5 col-md-7">
+        <div class="cards bg-secondary border-0 mb-0">
+          <div class="card-header bg-transparent pb-6">
+            <a class="navbar-brand">
+            <img src="/static/logo-temp.png">
+            </a>
+          </div>
+          <div class="card-body px-lg-5 py-lg-5">
+            <div class="text-center text-muted mb-4">
+              <!-- <h2> TCT Sign in </h2> -->
+            </div>
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+              {{ error_message }}
+            </div>
+          {% endif %}
+            <form action="{% url 'login' %}" method="post">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                <div class="input-group input-group-merge input-group-alternative">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                  </div>
+                  <input autofocus class="form-control" type="text" name="email" placeholder="Enter email address">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group input-group-merge input-group-alternative">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                  </div>
+                  <input class="form-control" type="password" name="password" placeholder="Enter password">
+                </div>
+              </div>
+              <div class="custom-control custom-control-alternative custom-checkbox">
+                <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
+                <label class="custom-control-label" for=" customCheckLogin">
+                  <span class="text-muted">Remember me</span>
+                </label>
+              </div>
+              <div class="text-center">
+                <input id='login-submit'  class="btn btn-primary" type="submit" value="Login">
+                <a id='login-submit' class="btn btn-primary" href="{% url 'register' %}"  value="Register"> Register </a>
+              </div>
+            </form>
+          </div>
+      </div>
+    {% include "includes/footer-fullscreen.html" %}
+    {% comment %} <div class="login-registration"> Don't have an account? <a href="{% url 'register' %}">Register here.</a><div> {% endcomment %}
+
+{% endblock %}

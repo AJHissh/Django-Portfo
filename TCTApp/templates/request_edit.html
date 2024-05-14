@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block body %}
+<div class="req-card">
+  <div class="card-header card-header-warning">
+    <h4 class="card-title">Fill out this form to make an edit request</h4>
+  </div>
+<form method="post" id="req-form">
+  {% csrf_token %}
+  {% crispy form %}
+  {% if form.errors %}
+  <div class="alert alert-danger" role="alert">
+    <strong>Errors:</strong>
+    <ul>
+    {% for error in form.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load custom_filter %}
+
+
+{% block body %}
+    {% csrf_token %}
+    {% if search_query %}
+        {% endif %}
+    <div id='record-table-max' class="container-fluid">
+        <div class="card">
+            <div class="card-header card-header-warning">
+              <!-- Card header content -->
+              <h4 class="card-title">View Records</h4>
+              {% comment %} <p class="card-category">All records as of {{date}}</p> {% endcomment %}
+              {% if error_message %}
+                {{error_message}}
+                {%endif %}
+                <form id='records_filter' method="GET" action="{% url 'view_records' %}">
+                    {% csrf_token %}
+                    <!-- Search form -->
+                    <div class="input-group no-border">
+                        <input type="text" id="search-input" class="form-control" name="search_query" value="{{ request.GET.search_query }}" placeholder="Search Records...">
+                    </div>
+                    <!-- Date filter form -->
+                    <label id='start_filter' for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date">
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date">
+                    <br>
+                    <!-- Company filter form -->
+                    <label id='company_filter_label' for="company_filter">Filter by Company:</label>
+                    <select id="company_filter" name="company_filter">
+                        <option value="">All Companies</option>
+                        <option value="WeBank X">WeBank X</option>
+                        <option value="NauR">NauR</option>
+                        <option value="Pareto P">Pareto P</option>
+                        <option value="FidoMS">FidoMS</option>
+                    </select>     
+                    <button type="submit" class="btn btn-white btn-just-icon">
+                        <i class="material-icons">search</i>
+                    </button>
+                </form>
+                <div  class="mx-auto text-center">
+                    <!-- Pagination -->
+                    <ul class="pagination">
+                        {% if data.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}{% if sort_column %}&sort_column={{ sort_column }}{% endif %}{% if reverse_sort %}&reverse_sort={{ reverse_sort }}{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}">&laquo; First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ data.previous_page_number }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}{% if sort_column %}&sort_column={{ sort_column }}{% endif %}{% if reverse_sort %}&reverse_sort={{ reverse_sort }}{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}">&lsaquo; Previous</a>
+                            </li>
+                        {% endif %}
+                        {% for num in data.paginator.page_range %}
+                            {% if num == data.number %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="?page={{ num }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}{% if sort_column %}&sort_column={{ sort_column }}{% endif %}{% if reverse_sort %}&reverse_sort={{ reverse_sort }}{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}">{{ num }} <span class="sr-only">(current)</span></a>
+                                </li>
+                            {% elif num > data.number|add:"-3" and num < data.number|add:"3" %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}{% if sort_column %}&sort_column={{ sort_column }}{% endif %}{% if reverse_sort %}&reverse_sort={{ reverse_sort }}{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if data.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ data.next_page_number }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}{% if sort_column %}&sort_column={{ sort_column }}{% endif %}{% if reverse_sort %}&reverse_sort={{ reverse_sort }}{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}">Next &rsaquo;</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ data.paginator.num_pages }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}{% if sort_column %}&sort_column={{ sort_column }}{% endif %}{% if reverse_sort %}&reverse_sort={{ reverse_sort }}{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}">Last &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div> 
+            </div>
+            <div class="table-responsive">
+              <!-- Table of records -->
+              <table id="my-table" class="table table-sm table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                      <th class="sortable" data-column="0">
+                        #
+                      </th>
+                      <th class="sortable" data-column="1">
+                        Edit / View History / Resume
+                      </th>
+                      <th class="sortable" data-column="2">
+                        Agent
+                      </th>
+                      <th class="sortable" data-column="3">
+                        Start Time
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=1&reverse_sort={% if sort_column == 1 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 1 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        </a>
+                    </th>          
+                    <th class="sortable" data-column="4">
+                        End Time
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=2&reverse_sort={% if sort_column == 2 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 2 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        </a>
+                    </th>
+                    <th class="sortable" data-column="5">
+                        Date Today
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=3&reverse_sort={% if sort_column == 3 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 3 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        </a>
+                    </th>   
+                    <th class="sortable" data-column="6">
+                        Month Performed
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=4&reverse_sort={% if sort_column == 4 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 4 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        </a>
+                    </th>
+                      <th class="sortable" data-column="7">
+                        Record Number
+                      </th>
+                      <th class="sortable" data-column="8">
+                        Choose Company
+                      </th>
+                      <th class="sortable" data-column="9">
+                        Choose Segment
+                      </th>
+                      <th class="sortable" data-column="10">
+                        Choose Task
+                      </th>
+                      <th class="sortable" data-column="11">
+                        Completion Status
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=9&reverse_sort={% if sort_column == 9 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 9 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        </a>
+                    </th>
+                    </tr>
+                  </thead>
+                  {% if data %}
+                  <tbody>
+                      {% with page_records=data %}
+                      {% for page in page_records %}
+                      {% with start_index=page_records.start_index %}
+                      <tr>
+                          <td id="frozen-column">{{ forloop.counter0|add:start_index }}</td>
+                          <td class="button-container">
+                              <a href="{% url 'request_edit' %}?record_id={{ page.5 }}">
+                                  <button type="button" id='request-change'>
+                                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                          <path d="M0 0h24v24H0z" fill="none" />
+                                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                                      </svg>
+                                  </button>
+                              </a>
+                              <a href="{% url 'view_history' %}?record_id={{ page.5 }}">
+                                  <button type="button" id='view-history'>
+                                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                          <path d="M0 0h24v24H0z" fill="none" />
+                                          <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
+                                      </svg>
+                                  </button>
+                              </a>
+                              {% if page.9 == False %}
+                              <a href="{% url 'resume_tasks' %}?record_id={{ page.5 }}">
+                                  <button type="button" id="resume-button" data-record-id="{{ page.5 }}">
+                                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                          <path d="M0 0h24v24H0z" fill="none" />
+                                          <path d="M8 5v14l11-7z" />
+                                      </svg>
+                                  </button>
+                              </a>
+                              {% endif %}
+                          </td>
+                          {% for field in page %}
+                          <td>{{ field }}</td>
+                          {% endfor %}
+                      </tr>
+                      {% endwith %}
+                      {% endfor %}
+                      {% endwith %}
+                  </tbody>
+                  {% endif %}
+              </table>
+          </div>
+    </div>
+{% endblock %}

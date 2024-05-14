@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}TCT Web App{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-qI/UdN/uy/KeaRjFge9TmT9rZTjKZGmLuDj1vpV7+jwwzNR/K2Vl+ThlpY1ZjU6S/gUHuNC/FU6++8zhDbj4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="{% static 'styles.css' %}" rel="stylesheet">
+        <link rel="icon" href="/static/assets/img/theme/tctfavicon.png" type="image/png">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/assets/vendor/nucleo/css/nucleo.css" type="text/css">
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/assets/css/argon.css?v=1.2.0" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">
+        <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+        {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
+    </head>
+<body>
+    <!-- If the user is staff (admin) -->
+    {% if user.is_staff %}
+        <!-- Admin Panel Navigation -->
+        <nav id='top-nav' class="navbar navbar-expand-lg navbar-absolute fixed-top ">
+            <div class="container-fluid">
+                <h2>Admin Panel</h2>
+                <div class="collapse navbar-collapse justify-content-end">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">notifications</i>
+                                <span class="notification"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Messages</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">person</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="#">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Admin Panel Sidebar -->
+        <div class="sidebar-menu">
+            <header class="logo">
+                <a href="#" class="sidebar-icon">
+                    <span class="fa fa-bars"></span>
+                </a>
+                <div class="logo">  
+                    <a href="/" class="sidebar-icon">
+                        <img src="{% static 'logo-temp.png' %}" alt="My Logo" href="/">
+                    </a>
+                </div>   
+            </header>
+            <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+            <div class="menu">
+                <ul id="menu">
+                    <li><a href="{% url 'index' %}"><i class="fa fa-home"></i><span>Admin Dashboard</span></a></li>
+                    <li><a href="{% url 'admin_view_records' %}"><i class="fa fa-file-text"></i><span>View User Records</span></a></li>
+                    <li><a href="{% url 'admin_view_change_requests' %}"><i class="fa fa-pause"></i><span>View Change Requests</span></a></li>
+                    <li>
+                        <a>
+                            <i class="fa fa-pause"></i><span>Download Records</span>
+                        </a>
+                        <ul>
+                            <li><a href="{% url 'download_records' %}">All Records - No Version History</a></li>
+                            <li><a href="{% url 'download_records_all_version' %}">All Records - No Version History</a></li>
+                            <li><a href="{% url 'ibanx_download_records' %}">WeBank X Records - No Version History</a></li>
+                            <li><a href="{% url 'NauR_download_records' %}">NauR Records - No Version History</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <footer>Signed in as: <b>{{user}}</b></footer>
+        </div>
+    {% else %}
+        {% if user.is_authenticated %}
+            <!-- User Navigation (Non-admin) -->
+            <div class="sidebar-menu">
+                <header class="logo">
+                    <a href="#" class="sidebar-icon">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <div class="logo">  
+                        <a href="/" class="sidebar-icon">
+                            <img src="{% static 'logo-temp.png' %}" alt="My Logo" href="/">
+                        </a>
+                    </div>  
+                </header>
+                <div id='sb-top-border' style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+                <div class="menu">
+                    <ul id="menu">
+                        <li><a href="{% url 'index' %}"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
+                        <li><a href="{% url 'task_page' %}"><i class="fa fa-play"></i><span>Form Time Tracker </span></a></li>
+                        <li><a href="{% url 'view_records' %}"><i class="fa fa-file-text"></i><span>View Data</span></a></li>
+                        <li><a href="{% url 'profile' %}"class="dropdown-item"><i class="ni ni-single-02"></i><span> Portfolio / About Me </span></a></li>
+                    </ul>
+                </div>
+                <footer>Signed in as: <b>{{user}}</b></footer>
+            </div>
+            </div>
+            {% include "includes/navigation.html" %}
+        {% else %}
+            <!-- Fullscreen Navigation for Unauthenticated Users -->
+            {% include "includes/navigation-fullscreen.html" %}
+        {% endif %}
+    {% endif %}
+    
+    {% block body %}
+    {% endblock %}
+    
+    {% include "includes/scripts.html" %}
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/admin_buttons.js' %}"></script>
+    <script src="{% static 'js/req_edit_btns.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/toggler.js' %}"></script>
+    <script src="{% static 'js/resume_task.js' %}"></script>
+    <script src="{% static 'js/form_pers.js' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.32/moment-timezone-with-data.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <!-- Include tables.js -->
+    <script type="text/javascript" src="{% static 'js/tables.js' %}"></script>
+</body>
+</html>

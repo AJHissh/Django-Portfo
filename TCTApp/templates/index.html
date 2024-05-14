@@ -1,0 +1,228 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+  {% if user.is_staff %}
+  <div id='record-table-max'>
+    <!-- Admin-specific content -->
+    <div id='card-tasks' class="card">
+      <div class="card-header card-header-warning">
+        <h4 class="card-title">{{task}}</h4>
+      </div>
+    </div>
+    {% if messages %}
+      <!-- Display success messages -->
+      {% for message in messages %}
+        <div id="submit-success-message" class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div id='card-tasks' class="card">
+      <div class="card-header card-header-warning">
+        <h4 class="card-title">Welcome Admin</h4>
+      </div>
+    </div>
+    <div id='card-tasks' class="card">
+      <div class="card-header card-header-warning">
+        <h4 class="card-title">{{task}}</h4>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+  <div id='index-dashboard'>
+    <!-- User dashboard -->
+    <div id='card-index' class="card">
+      <div class="card-header card-header-warning">
+        <h4 id='dashboard-header' class="card-title">Dashboard</h4>
+      </div>
+      <div>
+    </div>
+    <div id='index_bg'>
+      <div class="stats-index">
+      </div>
+      {% if messages %}
+        <!-- Display success messages -->
+        {% for message in messages %}
+          <div id="submit-success-message" class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      <div class="grey-bg container-fluid">
+        <section id="stats-subtitle">
+          <div class="row">
+            <div class="col-xl-6 col-md-12">
+              <div class="card overflow-hidden">
+                <div class="card-content">
+                  <div class="card-body cleartfix">
+                    <div class="media align-items-stretch">
+                      <div class="align-self-center">
+                        <i class="icon-pencil primary font-large-2 mr-2"></i>
+                      </div>
+                      <div class="media-body">
+                        <h4>Total Forms Completed</h4>
+                      </div>
+                      <div class="align-self-center">
+                        <h1>{{task_count}}</h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-md-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body cleartfix">
+                    <div class="media align-items-stretch">
+                      <div class="align-self-center">
+                        <i class="icon-speech warning font-large-2 mr-2"></i>
+                      </div>
+                      <div class="media-body">
+                        <h4>Total Forms Submitted Today</h4>
+                      </div>
+                      <div class="align-self-center">
+                        <h1>{{submit_today}}</h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="minimal-statistics">
+          <!-- Section for displaying minimal statistics -->
+          <div class="row">
+            <div class="card">
+              <!-- Card for displaying tasks completed per client -->
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media d-flex">
+                    <div class="media-body text-left">
+                      <h3 class="danger">Forms Completed</h3>
+                      <!-- Heading for tasks completed per client -->
+                    </div>
+                    <div class="align-self-center">
+                      <i class="icon-rocket danger font-large-2 float-right"></i>
+                      <!-- Icon for tasks completed per client -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media d-flex">
+                    <div class="media-body text-left">
+                      <h3 class="primary">{{categoryone_count}}</h3>
+                      <span>Category One Forms Completed</span>
+                    </div>
+                    <div class="align-self-center">
+                      <i class="icon-support primary font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media d-flex">
+                    <div class="media-body text-left">
+                      <h3 class="primary">{{categorytwo_count}}</h3>
+                      <span>Category Two Forms Completed</span>
+                    </div>
+                    <div class="align-self-center">
+                      <i class="icon-support primary font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                    <div class="align-self-center">
+                      <i class="icon-support primary font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                  <form id="filter-form" method="GET" action="{% url 'index' %}">
+                    {% csrf_token %}
+                    <label for="selected_day">Select Day:</label>
+                    <input type="date" id="selected_day" name="selected_day">                    
+                    <label for="selected_date_range_start">Select Date Range Start:</label>
+                    <input type="date" id="selected_date_range_start" name="selected_date_range_start">
+                    <label for="selected_date_range_end">Select Date Range End:</label>
+                    <input type="date" id="selected_date_range_end" name="selected_date_range_end">
+                    <button type="submit">Apply Filter</button>
+                  </form>   
+                  <img src="data:image/png;base64,{{ graph }}" alt="Form Completion Data">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        </div>
+        {% endif %}
+        {% else %}
+        <!-- Page content -->
+        <div class="container mt--8 pb-5">
+          <div class="row justify-content-center">
+            <div id='login-form' class="col-lg-5 col-md-7">
+              {% if messages %}
+              <!-- Display success messages -->
+              {% for message in messages %}
+                <div id="submit-success-message" class="alert alert-success">{{ message }}</div>
+              {% endfor %}
+              {% endif %}
+              <div class="cards bg-secondary border-0 mb-0">
+                <div class="card-header bg-transparent pb-6">
+                      <a class="navbar-brand" href="/">
+                    <img src="/static/logo-temp.png">
+                    </a>
+                </div>
+                <div class="card-body px-lg-5 py-lg-5">
+                  <div class="text-center text-muted mb-4">
+                    <!-- <h2> TCT Sign in </h2> -->
+                  </div>
+                  {% if error_message %}
+                  <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                  </div>
+                {% endif %}
+                  <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                      <div class="input-group input-group-merge input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                        </div>
+                        <input autofocus class="form-control" type="text" name="email" placeholder="Enter email address">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="input-group input-group-merge input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                        </div>
+                        <input class="form-control" type="password" name="password" placeholder="Enter password">
+                      </div>
+                    </div>
+                    <div class="custom-control custom-control-alternative custom-checkbox">
+                      <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
+                      <label class="custom-control-label" for=" customCheckLogin">
+                        <span class="text-muted">Remember me</span>
+                      </label>
+                    </div>
+                    <div class="text-center">
+                      <input id='login-submit' class="btn btn-primary" type="submit" value="Login">
+                      <a id='login-submit' class="btn btn-primary" href="{% url 'register' %}" value="Register">Register</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+          {% include "includes/footer-fullscreen.html" %}
+
+    {% endif %}
+    {% endblock %}

@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+  {% if message %}
+    <div>{{ message }}</div>
+  {% endif %}
+
+   <!-- Page content -->
+   <div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+      <div id='login-form' class="col-lg-5 col-md-7">
+        <div class="cards bg-secondary border-0 mb-0">
+          <div class="card-header bg-transparent pb-6">
+            <a class="navbar-brand" href="/">
+                <img src="/static/logo-temp.png">
+            </a>
+          </div>
+          <div class="card-body px-lg-5 py-lg-5">
+            <div class="text-center text-muted mb-4">
+              <!-- <h2> Create an Account </h2> -->
+            </div>
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+              {% for field in form %}
+                <div class="form-group">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% for error in field.errors %}
+                    <ul class="errorlist">
+                      <li>{{ error }}</li>
+                    </ul>
+                  {% endfor %}
+              </div>
+              {% endfor %}
+            <div class="text-center">
+              <input id="register-submit" class="btn btn-primary" type="submit" value="Register">
+              <a id='register-submit' class="btn btn-primary" href="{% url 'index' %}"  value="Register"> Back to Login </a>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% include "includes/footer-fullscreen.html" %}
+  </div>
+
+{% endblock %}
+
+{% comment %} <form action="{% url 'login' %}" method="post">
+  {% csrf_token %}
+  <div class="form animated flipInX">
+      <h2>Login To Your Account</h2>
+      <form>
+          <label for="email">Email:</label>
+          <input autofocus class="form-control" type="text" name="email" placeholder="Enter email address">
+          <label for="password">Password:</label>
+          <input class="form-control" type="password" name="password" placeholder="Enter password">
+          <input id="login-submit" type="submit" value="Login">
+    </form> {% endcomment %}
+    </div>

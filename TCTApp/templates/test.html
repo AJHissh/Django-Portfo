@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Another Page</title>
+  <style>
+    /* CSS styles for the iframe */
+    #emailIframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Get the source URL from the query parameter
+    var urlParams = new URLSearchParams(window.location.search);
+    var src = urlParams.get("src");
+
+    // Create the iframe element
+    var emailIframe = document.createElement("iframe");
+    emailIframe.id = "emailIframe";
+    emailIframe.src = src;
+    emailIframe.style.width = "100%";
+    emailIframe.style.height = "400px";
+    emailIframe.style.border = "none";
+
+    // Append the iframe to the body
+    document.body.appendChild(emailIframe);
+  </script>
+</body>
+</html>

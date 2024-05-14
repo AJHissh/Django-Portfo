@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load custom_filter %}
+{% load static %}
+
+{% block body %}
+    {% csrf_token %}
+    <div id='record-table-max'>
+        <div class="card">
+            <div class="card-header card-header-warning">
+              <h4 class="card-title">All Records</h4>
+              <p class="card-category">Records from {{start}} to {{end}}</p>
+              {% if error_message %}
+                {{error_message}}
+                {%endif %}
+              <form id='date-filter-form' method="GET" action="{% url 'admin_date_filter' %}">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date">
+              
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date">
+              
+                <input type="submit" value="Filter">
+              </form>
+              <form id='navbar-form-id' class="navbar-form">
+                <div class="input-group no-border">
+                  {% comment %} <input type="text" id='search-input' value="" class="form-control" placeholder="Search..."> {% endcomment %}
+                  <input type="text" href="{% url 'admin_view_records' %}" id='search-input' class='form-control' name="search_query" value="{{ request.GET.search_query }}" placeholder="Search...">
+                  <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                    <i class="material-icons">search</i>
+                    <div class="ripple-container"></div>
+                  </button>
+                </div>
+              </form>
+            <div id='page-button' class="mx-auto text-center">
+                <ul class="pagination">
+                    {% if data.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ data.previous_page_number }}">&lsaquo; Previous</a></li>
+                    {% endif %}
+                    {% for num in data.paginator.page_range %}
+                        {% if num == data.number %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ num }} <span class="sr-only">(current)</span></a></li>
+                        {% elif num > data.number|add:"-3" and num < data.number|add:"3" %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if data.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ data.next_page_number }}">Next &rsaquo;</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ data.paginator.num_pages }}">Last &raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+    <div class="table-responsive"> 
+        <table id="my-table" class="table table-sm table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th> # </th>
+                        <th>Edit Record / View History</th>
+                        <th>Agent Name</th>
+                        <th>User UUID </th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th> Time Spent (minutes) </th>
+                        <th>Date Today</th>
+                        <th>Month Performed</th>
+                        <th>Record Number</th>                             
+                        <th>Choose Company</th>                 
+                        <th>Choose Segment</th>                   
+                        <th>Choose Task</th>
+                        <th>Completion Status</th>
+                    </tr>
+                </thead>
+                {% if data %}
+                <tbody>
+                    {% with page_records=data %}
+                    {% for page in page_records %}
+                        {% with start_index=page_records.start_index %}
+                        <tr>
+                            <td>{{ forloop.counter0|add:start_index }}</td>
+                            <td><a href="{% url 'admin_edit_records' %}?record_id={{ page.7 }}"><button type="button" id='admin_edit_records' class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button></a>
+                            <a href="{% url 'admin_view_history' %}?record_id={{ page.7 }}"><button type="button" id='view-history' class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg></button></a>
+                            </td>
+                        {% for field in page %}
+                        <td>{{ field }}</td>
+                        {% endfor %}
+                         </tr>
+                    {% endwith %}
+                    {% endfor %}
+                    {% endwith %}
+                  </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    {% endif %}
+{% endblock %}

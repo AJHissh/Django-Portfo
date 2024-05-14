@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static%}
+
+{% block body %}
+  {% csrf_token %}
+  <div class="container-fluid">
+    <div class="card">
+        <div class="card-header card-header-warning">
+          <h4 class="card-title">Change Requests</h4>
+          <p class="card-category">Change requests as of {{date}}</p>
+          <form id='navbar-form-id' class="navbar-form">
+            <div class="input-group no-border">
+              {% comment %} <input type="text" id='search-input' value="" class="form-control" placeholder="Search..."> {% endcomment %}
+              <input type="text" href="{% url 'view_records' %}" id='search-input' class='form-control' name="search_query" value="{{ request.GET.search_query }}" placeholder="Search...">
+              <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                <i class="material-icons">search</i>
+                <div class="ripple-container"></div>
+              </button>
+            </div>
+          </form>
+        </div>
+    <div class="table-responsive"> 
+        <table  id="my-table" class="table table-sm table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Mark As Complete</th>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Change</th>
+                        <th>Reason</th>
+                        <th>Change Fulfilled</th>
+                    </tr>
+                </thead>
+                {% if edit_reqs %}
+                <tbody>
+                    {% for reqs in edit_reqs %}
+                    <tr>
+                        <td><a href="{% url 'admin_view_change_requests_completion' %}?record_id={{reqs.id}}"><button type="button" id='request-change' class="btn btn-primary"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button></a>
+                        <td>{{ forloop.counter }}</td>         
+                        <td>{{ reqs.record_ID }}</td>
+                        <td> {{ reqs.name}} </td>
+                        <td>{{ reqs.change }}</td>
+                        <td>{{ reqs.reason }}</td>
+                        <td>{{ reqs.status }}</td> 
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p id='record-history-text'>No Edit Requests</p>
+    {% endif %}
+{% endblock %}

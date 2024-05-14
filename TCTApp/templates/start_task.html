@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+
+{% block body %}
+  {% comment %} <button id="pause" style="display: none;">Pause</button> {% endcomment %}
+  <button display='hidden' id="resume" style="display: none;">Resume</button>
+
+  <div id='card-tasks' class="card">
+    <div class="card-header card-header-warning">
+      <h4 class="card-title">{{task}}</h4>
+    </div>
+    <div class="btn-container">
+      <table id='timer-table' class="table">
+        <thead>
+          <th> Current Elapsed Time </th>
+          <th> Date Started</th>
+          <th> </th>
+          <th> </th>
+          <th></th>
+        </thead>
+        <tr>
+          <td>
+            <div id="timer"></div>
+          </td>
+          <td>
+            <p class="card-category" id='date_opened'></p>
+            <div id="dateOpenedContainer"></div>
+          </td>
+          <td>
+            <div class="btn-container">
+              <button id='pause-modal' data-open-modal >
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 320 512">
+                  <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"/>
+                </svg>Pause
+              </button>
+              <dialog data-modal class='testmodal'>
+                <div> Are you sure you want to pause this task? </div>
+                <button id="pause">Yes</button>
+                <button id='no-modal' data-close-modal>No</button>
+              </dialog>
+            </td>
+            <td>
+              <button id='submit-modal' data-open-modal2>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                </svg>Submit
+              </button>
+              <dialog data-modal2 class='testmodal'>
+                <div> Are you sure you want to submit this task? Please make sure all fields have inputs before clicking 'Yes'. </div>
+                <div id="error-container" class="alert alert-danger" role="alert" style="display: none;">
+                  <strong>Errors:</strong>
+                  <ul id="error-list"></ul>
+                </div>
+                <button id="end">Yes</button>
+                <button id='no-modal' onclick="clearErrors()" data-close-modal2>No</button>
+              </dialog>
+            </td>
+            <td>
+              <div class="btn-container">
+                <button id='clear-modal' data-open-modal5 >
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M125.7 160H176c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32s32 14.3 32 32v51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"/></svg>Restart Task
+                </button>
+                <dialog data-modal5 class='testmodal'>
+                  <div> Clicking YES will restart the task - are you sure you want to restart this task? </div>
+                  <button id="clear-task">Yes</button>
+                  <button id='no-modal' data-close-modal5>No</button>
+                </dialog>
+              </td>
+          </td>
+        </tr>
+      </table>
+      {% comment %} <button id="start-button" onclick="startTimer('{{view}}')">Start Timer</button> {% endcomment %}
+    </div>
+    <form method="post" id="task-form" class="aligned-form">
+      {% csrf_token %}
+      {% crispy form %}
+      <input type="hidden" id="id_elapsed_time" name="elapsed_time" value="{{elapsed_time}}">
+      <input type="hidden" id="is_paused" name="is_paused" value="True">
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">
+        <ul>
+        {% for error in form.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </form>
+
+  <div class="container-scroll">
+    <button id='scroll-top' onclick="scrollToTop()">Scroll to Top</button>
+  </div>
+
+</div>
+
+{% block javascript %}
+<script src="{% static 'js/start_task.js' %}"></script>
+<script src="{% static 'js/form_pers.js' %}"></script>
+<script>
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    
+    });}
+
+  document.addEventListener('DOMContentLoaded', function() {
+    startTimer('{{ view }}');
+  });
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve the value of the dateOpened parameter from the URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var view = urlParams.get('view');
+    var viewDateOpenedKey = 'dateOpened_' + view;
+    var date_temp = localStorage.getItem(viewDateOpenedKey);
+    var options = { timeZone: 'Asia/Manila' };
+    var dateOpened;
+
+  
+    // If dateOpened doesn't exist in local storage, create and store it
+    if (date_temp) {
+      var date = new Date(date_temp);
+      var dateOpened = date.toLocaleString('en-US', options);
+    } else {
+      var date = new Date();
+      var dateOpened = date.toLocaleString('en-US', options);
+      localStorage.setItem(viewDateOpenedKey, dateOpened);
+    }
+
+    // Update the content of the dateOpenedContainer element
+    var dateOpenedContainer = document.getElementById('dateOpenedContainer');
+    dateOpenedContainer.textContent = dateOpened;
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener to the clear-task button
+    var clearTaskButton = document.getElementById('clear-task');
+    clearTaskButton.addEventListener('click', function() {
+      // Clear the necessary items from local storage
+      var urlParams = new URLSearchParams(window.location.search);
+      var view = urlParams.get('view');
+      localStorage.removeItem('elapsedTime_' + view);
+      localStorage.removeItem('dateOpened_' + view);
+      localStorage.removeItem('formData');
+
+      // Redirect to the task_page.html
+      window.location.href = '/task_page';
+
+      // Close the modal/dialog after redirecting
+      var dialog = document.querySelector('[data-modal]');
+      dialog.close();
+      });
+    });
+
+    
+    function clearErrors() {
+      setTimeout(function() {
+        location.reload();
+      }, 0);
+    }
+</script>
+{% endblock %}
+{% endblock %}

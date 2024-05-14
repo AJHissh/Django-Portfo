@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<h1 class="main-title">Download All Records and All Records with Version History<h1>
+<div id="sidebar-task" class="sidebar-task">
+  <ul>
+    <li><a href="{% url 'index' %}">Home</a></li> 
+    <li><a href="{% url 'admin_view_records' %}">View All Records</a></li>
+  </ul>
+</div>
+{% endblock %}

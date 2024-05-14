@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block body %}
+  <form method="post" id="record-edit-form"  class="req-form">
+    {% csrf_token %}
+    {% crispy form %}
+    <button id="submit-req-edit" type="submit" class="btn btn-primary">Apply Change</button>
+  </form>
+{% endblock %}

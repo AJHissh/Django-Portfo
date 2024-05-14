@@ -1,0 +1,1 @@
+default_app_config = 'TCTApp2.apps.Tctapp2Config'

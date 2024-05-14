@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+  {% if user.is_staff %}
+{% else %}
+<div id='index-dashboard'> 
+  <div id='card-index' class="card">
+    <div class="card-header card-header-warning">
+      <h4 id='dashboard-header' class="card-title">Form Time Tracker Example</h4>
+      <h4> The Form Time Tracker keeps track of how long a form takes to complete</h4>
+      <h4>this can be used to track tasks which require information to be filed out among other use cases.</h4>
+    </div>
+    <div>
+  </div>
+  <div id='task_page'>
+      <div class="box__header">
+        <h3 class="box__header-title"></h3>
+      </div>
+                <menu class='task-start-nav' >
+                          <menuitem id="demo1">
+                            <menu>
+                              <menuitem id="demo2">
+                              <a><b>Form Category 1</b></a>
+                              <menu>
+                                <menuitem id="demo2">
+                                  <a>Form Segment 1</a>
+                                  <menu>
+                                    <menuitem> <a href="{% url 'TCTApp2:start_Categorytwo_task' %}?task_segment=Form Category One&view=view1" class="start_popup" data-view="view1"><i id="play_icon" class="fa fa-play" ></i>Example Form 1</a></menuitem>
+                                    <menuitem> <a href="{% url 'TCTApp2:start_Categorytwo_task2' %}?task_segment=Form Category One&view=view2"  class="start_popup"data-view="view2"><i id="play_icon" class="fa fa-play"></i>Example Form 2</a></menuitem>
+                                    <menuitem><a href="{% url 'TCTApp2:start_Categorytwo_task3' %}?task_segment=Form Category One&view=view3"  class="start_popup" data-view="view3"><i id="play_icon" class="fa fa-play"></i>Example Form 3</a></menuitem>
+                                  </menu>
+                                </menuitem>
+                              </menu>
+                            </menuitem>
+                                 
+                              <menuitem id="demo2">
+                              <a><b>Form Category 2</b></a>
+                              <menu>
+                                <menuitem id="demo2">
+                                  <a>Form Segment 2</a>
+                                  <menu>    
+                                    <menuitem><a href="{% url 'start_Categoryone_task' %}?task_segment=Form Category Two&view=view39"  class="start_popup" data-view="view39"><i id="play_icon" class="fa fa-play"></i>Example Form 1</a></menuitem>
+                                    <menuitem><a href="{% url 'start_Categoryone_task2' %}?task_segment=Form Category Two&view=view40"  class="start_popup" data-view="view40"><i id="play_icon" class="fa fa-play"></i>Example Form 2</a></menuitem>
+                                    <menuitem><a href="{% url 'start_Categoryone_task3' %}?task_segment=Form Category Two&view=view41"  class="start_popup" data-view="view41"><i id="play_icon" class="fa fa-play"></i>Example Form 3</a></menuitem>
+                                  </menu>
+                                </menuitem>
+                              </menu>
+                            </menuitem>
+                          </menuitem>
+                        </menu>
+       
+                    </div>
+                </div>
+            </div>
+      </div>
+</div>
+{% endif %}
+  
+{% endif %}
+{% block javascript %}
+<script src="{% static 'js/start_task.js' %}"></script>
+<script src="{% static 'js/form_pers.js' %}"></script>
+{% endblock %}
+{% endblock %}

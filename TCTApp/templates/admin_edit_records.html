@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block body %}
+<div id='card-tasks' class="card">
+  <div class="card-header card-header-warning">
+    <h4 class="card-title">Editing Task : {{company}}</h4>
+    <h4 class="card-title">Task ID : {{id}}</h4>
+  </div>
+</div>
+<form method="post" id="record-edit-form" class="aligned-form">
+  {% csrf_token %}
+  {% crispy form %}
+  <div class="end-btn">
+    <button id="submit-edit" type="button" class="btn btn-primary">Apply Change</button>
+    <button id="delete-record" type="button" name="delete_record" value="delete_record" class="btn btn-danger">Delete Record</button>
+  </div>
+</form>
+<div>
+{% endblock %}

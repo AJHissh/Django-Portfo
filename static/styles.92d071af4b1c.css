@@ -1,0 +1,68 @@
+body {
+    padding: 10px;
+}
+
+/* ul {  
+    list-style-type: none;  
+    }  */
+h1 {
+    text-align: center;
+}
+h2 {
+   text-align: center;
+}
+
+.nav-item {
+    text-align: right;
+    margin-top: -1vh;
+    margin-bottom: -1vh;
+    font-size: medium;
+}
+
+.signed {
+    text-align: right;
+}
+
+.main-title {
+    text-align: center;
+}
+
+form input.reg-input {
+   text-align: center; 
+}
+.reg-form-container {
+    margin: 0 auto;
+    max-width: 500px; /* adjust to your liking */
+  }
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 200px;
+    background-color: #f2f2f2;
+    padding-top: 13.4vh;
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li:first-child {
+    border-top: 1px solid #ccc;
+  }
+  
+  .sidebar li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: blue;
+  }
