@@ -32,6 +32,7 @@ from simple_history.utils import get_history_manager_for_model
 from .decorators import admin_only
 import csv
 import pytz
+from pytz import timezone as pytz_timezone
 from django.core.cache import cache
 from django.http import JsonResponse
 from pathlib import Path
@@ -113,7 +114,6 @@ def index(request):
                 
                 # Add the count of records found into the count variables above
                 if model_results:
-                    if hasattr(model, 'date_submitted'):
                         # Count tasks and fetch their submission dates
                         for task in model_results:
                             if task.is_completed:
@@ -121,7 +121,9 @@ def index(request):
                             else:
                                 today_paused_count += 1
                             if task.date_submitted:
-                                task_date = task.date_submitted.date()
+                                task_date = task.date_submitted.astimezone(pytz_timezone('Asia/Manila')).date()
+                                print("HERE!!")
+                                print(task_date)
                                 task_dates[task_date].append(task)
                 
     # Prepare data for plotting
@@ -134,6 +136,7 @@ def index(request):
     for date_submitted, tasks in task_dates.items():
         data['Date Submitted'].append(date_submitted.strftime('%Y-%m-%d'))
         data['Task Count'].append(len(tasks))
+        print(date_submitted)
 
     # Fetch the selected filtering criteria from the request
     if request.method == 'POST':
@@ -985,30 +988,37 @@ def view_history(request):
 ## LOGIN, REGISTER, ACTIVATION ##
 
 def login_view(request):
-    # Check if the request method is POST (i.e., form submission)
     if request.method == "POST":
-        # Get the email and password from the POST parameters
         email = request.POST.get("email", "").strip()
         password = request.POST.get("password", "").strip()
         
-        
-        # Authenticate the user with the provided email and password
         user = authenticate(request, username=email, password=password)
-        
-        # Check if the user is authenticated
         if user is not None:
-            # Log in the user and redirect to the "index" view
             login(request, user)
             return HttpResponseRedirect(reverse("profile"))
         else:
-            # If authentication fails, render the "login.html" template with an error message
             return render(request, "login.html", {
                 "error_message": "Invalid username and/or password."
             })
-    else:
-        # If the request method is not POST, render the "login.html" template
-        return render(request, "login.html")
+    elif request.GET.get("guest_login"): 
+        random_username = ''.join(random.choices(string.ascii_lowercase, k=8))
+        random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        random_first_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=8))
+        random_last_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=8))
+        random_email = ''.join(random.choices(string.ascii_lowercase, k=8)) + '@example.com'
 
+        guest_user = GuestUser.create_guest_user(username=random_username, password=random_password, first_name=random_first_name, last_name=random_last_name, email=random_email)
+        guest_user.user.first_name = random_first_name
+        guest_user.user.last_name = random_last_name
+        guest_user.user.email = random_email
+        guest_user.user.save()
+
+        user = authenticate(request, username=guest_user.user.username, password=random_password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("profile"))
+    else:
+        return render(request, "login.html")
 
 
 def logout_view(request):

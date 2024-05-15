@@ -20,38 +20,44 @@
               {{ error_message }}
             </div>
           {% endif %}
-            <form action="{% url 'login' %}" method="post">
-              {% csrf_token %}
-              <div class="form-group mb-3">
+          <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group mb-3">
                 <div class="input-group input-group-merge input-group-alternative">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                  </div>
-                  <input autofocus class="form-control" type="text" name="email" placeholder="Enter email address">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                    </div>
+                    <input autofocus class="form-control" type="text" name="email" placeholder="Enter email address">
                 </div>
-              </div>
-              <div class="form-group">
+            </div>
+            <div class="form-group">
                 <div class="input-group input-group-merge input-group-alternative">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                  </div>
-                  <input class="form-control" type="password" name="password" placeholder="Enter password">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                    </div>
+                    <input class="form-control" type="password" name="password" placeholder="Enter password">
                 </div>
-              </div>
-              <div class="custom-control custom-control-alternative custom-checkbox">
+            </div>
+            <div class="custom-control custom-control-alternative custom-checkbox">
                 <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
                 <label class="custom-control-label" for=" customCheckLogin">
-                  <span class="text-muted">Remember me</span>
+                    <span class="text-muted">Remember me</span>
                 </label>
-              </div>
-              <div class="text-center">
-                <input id='login-submit'  class="btn btn-primary" type="submit" value="Login">
-                <a id='login-submit' class="btn btn-primary" href="{% url 'register' %}"  value="Register"> Register </a>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div class="text-center">
+                <input id='login-submit' class="btn btn-primary" type="submit" value="Login">
+                <a id='register-link' class="btn btn-primary" href="{% url 'register' %}"> Register </a>
+                <a id='guest-login-link' class="btn btn-primary" href="{% url 'login' %}?guest_login=1">Login as Guest</a>
+        </form>
       </div>
     {% include "includes/footer-fullscreen.html" %}
     {% comment %} <div class="login-registration"> Don't have an account? <a href="{% url 'register' %}">Register here.</a><div> {% endcomment %}
 
+{% block javascript %}
+<script>
+
+
+</script>
+
+{% endblock %}
 {% endblock %}

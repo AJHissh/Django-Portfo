@@ -8,6 +8,8 @@ import datetime
 from django.contrib.auth import get_user_model
 import uuid
 from simple_history.models import HistoricalRecords
+import random
+import string
 
 
 ##----------------------------------------------##
@@ -165,6 +167,21 @@ def number_range(value):
 class User(AbstractUser):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     pass
+
+
+class GuestUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50,null=True)
+    last_name = models.CharField(max_length=50,null=True)
+    email = models.EmailField(null=True)
+
+    @classmethod
+    def create_guest_user(cls, username, password, first_name, last_name, email):
+        # Create a new user with the provided username and password
+        user = User.objects.create_user(username=username, password=password)
+        
+        # Create a GuestUser object associated with the newly created user
+        return cls.objects.create(user=user, first_name=first_name, last_name=last_name, email=email)
 
 
 ## Request Edit model for data inputted into the request edit form ## 

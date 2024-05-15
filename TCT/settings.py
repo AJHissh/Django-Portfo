@@ -136,7 +136,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Manila"
+
+USE_TZ = True
 
 USE_I18N = True
 
@@ -188,8 +190,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 AUTHENTICATION_BACKENDS = [    'TCTApp.backends.EmailBackend',    'django.contrib.auth.backends.ModelBackend',    'allauth.account.auth_backends.AuthenticationBackend',]
 
-TIME_ZONE = 'Asia/Manila'
-USE_TZ = True
 
 LOGGING = {
     'version': 1,
