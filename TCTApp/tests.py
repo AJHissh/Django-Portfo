@@ -1,3 +1,8 @@
 from django.test import TestCase
+from . models import *
 
-# Create your tests here.
+
+class ModelTests(TestCase):
+
+    def setUp(self):
+          self.forms = Categoryone.objects.create()
