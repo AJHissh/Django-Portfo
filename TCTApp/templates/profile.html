@@ -14,13 +14,40 @@
     <div id='card-tasks' class="card">
       <div class="card-header card-header-warning">
         <h4 class="card-title"> Analyst | Developer | Engineer </h4>
-        <h4> Hi, I am Andrew James Hisshion. A Data Analyst by Day and A Data Analyst By Night </h4>
+        <center>
+        <font size="4"> Hi, I am Andrew James Hisshion. A Data Analyst by Day and A Data Analyst By Night </font>
+      </center>
       </div>
     </div>
     <div id='card-tasks' class="card">
       <div class="card-header card-header-warning">
-        <h4 class="card-title"> Portfolio</h4>
-        <h4> Download My Resume Here!  </h4>
+
+        <h5 class="card-title"> About me</h5>
+       <br>
+       <center>
+       <font size="6" style="font-family: Georgia, 'Times New Roman', Times, serif;"><i>Andrew James Hisshion</i></font>
+       <br>
+       <br> <p><font size="4">
+As an avid computer user, I pride myself on staying up-to-date with current events and technological
+advances, particularly in areas relevant to data analysis. I regularly engage with topics such as data
+management techniques, statistical models, and emerging technologies that can enhance analytical
+processes.
+In all aspects of my professional and personal life, I incorporate a strategic approach. Whether it's
+optimizing workflows, refining data collection methods, or planning project timelines, I prioritize
+efficiency and foresight to achieve optimal outcomes. My analytical mindset allows me to dissect
+complex problems and identify innovative solutions while considering future implications.
+ </font></p>
+
+
+       <br>
+       <font size="4">
+       <a href="https://linkedin.com/in/andrewjameshisshion"> LinkedIn | </a> 
+       <a href="https://github.com/AJHissh">Github | </a> 
+       <a href="{% url 'download_resume' %}" download> Resume </a> 
+      </font>
+       <br><br><br>
+      </center>
+        <marquee SCROLLAMOUNT=20>
         <button id='download-resume'>
           <a href="{% url 'download_resume' %}" download>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -29,6 +56,7 @@
               </svg>Download Resume
           </a>
       </button>
+         </marquee>
       </div>
     </div>
 {% endblock %}
