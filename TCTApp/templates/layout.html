@@ -110,10 +110,10 @@
                 <div id='sb-top-border' style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
                 <div class="menu">
                     <ul id="menu">
+                        <li><a href="{% url 'profile' %}"class="dropdown-item"><i class="ni ni-single-02"></i><span> About </span></a></li>
                         <li><a href="{% url 'index' %}"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
                         <li><a href="{% url 'task_page' %}"><i class="fa fa-play"></i><span>Form Time Tracker </span></a></li>
                         <li><a href="{% url 'view_records' %}"><i class="fa fa-file-text"></i><span>View Data</span></a></li>
-                        <li><a href="{% url 'profile' %}"class="dropdown-item"><i class="ni ni-single-02"></i><span> Portfolio / About Me </span></a></li>
                     </ul>
                 </div>
                 <footer>Signed in as: <b>{{user}}</b></footer>

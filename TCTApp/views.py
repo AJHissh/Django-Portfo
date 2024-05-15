@@ -35,6 +35,7 @@ import pytz
 from django.core.cache import cache
 from django.http import JsonResponse
 from pathlib import Path
+from django.views.decorators.csrf import ensure_csrf_cookie
 # import gspread
 # from oauth2client.service_account import ServiceAccountCredentials
 import json
@@ -91,6 +92,9 @@ def index(request):
     Categoryone_count = 0
     total_form_completes = 0
     task_dates = defaultdict(list)
+    selected_day = 0;
+    selected_date_range_start = 0;
+    selected_date_range_start = 0;
     
     # Excluded models from calculations
     excluded_models = ['RequestEdit', 'User', 'HistoricalCategorytwo', 'HistoricalCategorytwo2','HistoricalCategorytwo3','HistoricalCategoryone', 'HistoricalCategoryone2','HistoricalCategoryone3']
@@ -132,27 +136,33 @@ def index(request):
         data['Task Count'].append(len(tasks))
 
     # Fetch the selected filtering criteria from the request
-    selected_day = request.GET.get('selected_day')
-    selected_date_range_start = request.GET.get('selected_date_range_start')
-    selected_date_range_end = request.GET.get('selected_date_range_end')
+    if request.method == 'POST':
+        selected_day = request.POST.get('selected_day')
+        selected_date_range_start = request.POST.get('selected_date_range_start')
+        selected_date_range_end = request.POST.get('selected_date_range_end')
+        print(selected_date_range_end)
+        
+        if cache_key:
+            cache.delete(cache_key)
 
-    # Filter the data based on the selected criteria
+    
     if selected_day:
         selected_day_tasks = task_dates.get(datetime.strptime(selected_day, '%Y-%m-%d').date(), [])
         data['Date Submitted'] = [selected_day]
         data['Task Count'] = [len(selected_day_tasks)]
     elif selected_date_range_start and selected_date_range_end:
-        filtered_dates = []
-        filtered_counts = []
-        start_date = datetime.strptime(selected_date_range_start, '%Y-%m-%d').date()
-        end_date = datetime.strptime(selected_date_range_end, '%Y-%m-%d').date()
-        for date_submitted, count in zip(data['Date Submitted'], data['Task Count']):
-            date_submitted = datetime.strptime(date_submitted, '%Y-%m-%d').date()
-            if start_date <= date_submitted <= end_date:
-                filtered_dates.append(date_submitted.strftime('%Y-%m-%d'))
-                filtered_counts.append(count)
-        data['Date Submitted'] = filtered_dates
-        data['Task Count'] = filtered_counts
+        if selected_date_range_start.strip() and selected_date_range_end.strip():
+            filtered_dates = []
+            filtered_counts = []
+            start_date = datetime.strptime(selected_date_range_start, '%Y-%m-%d').date()
+            end_date = datetime.strptime(selected_date_range_end, '%Y-%m-%d').date()
+            for date_submitted, count in zip(data['Date Submitted'], data['Task Count']):
+                date_submitted = datetime.strptime(date_submitted, '%Y-%m-%d').date()
+                if start_date <= date_submitted <= end_date:
+                    filtered_dates.append(date_submitted.strftime('%Y-%m-%d'))
+                    filtered_counts.append(count)
+            data['Date Submitted'] = filtered_dates
+            data['Task Count'] = filtered_counts
     
     
     total_form_completes = data['Task Count']
@@ -978,8 +988,9 @@ def login_view(request):
     # Check if the request method is POST (i.e., form submission)
     if request.method == "POST":
         # Get the email and password from the POST parameters
-        email = request.POST["email"]
-        password = request.POST["password"]
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "").strip()
+        
         
         # Authenticate the user with the provided email and password
         user = authenticate(request, username=email, password=password)
@@ -988,7 +999,7 @@ def login_view(request):
         if user is not None:
             # Log in the user and redirect to the "index" view
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("profile"))
         else:
             # If authentication fails, render the "login.html" template with an error message
             return render(request, "login.html", {
@@ -1149,10 +1160,10 @@ def request_edit(request):
 def view_records(request):
     user = request.user
     user_id = user.uuid
-    search_query = request.GET.get('search_query', '').strip()
-    company_filter = request.GET.get('company_filter', '').strip()
-    start = request.GET.get('start_date', '').strip()
-    end = request.GET.get('end_date', '').strip()
+    search_query = request.POST.get('search_query', '').strip()
+    company_filter = request.POST.get('company_filter', '').strip()
+    start = request.POST.get('start_date', '').strip()
+    end = request.POST.get('end_date', '').strip()
 
     query = Q(user=user_id)
     

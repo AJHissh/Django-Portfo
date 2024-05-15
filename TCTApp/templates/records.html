@@ -16,7 +16,7 @@
               {% if error_message %}
                 {{error_message}}
                 {%endif %}
-                <form id='records_filter' method="GET" action="{% url 'view_records' %}">
+                <form id='records_filter' method="POST" action="{% url 'view_records' %}">
                     {% csrf_token %}
                     <!-- Search form -->
                     <div class="input-group no-border">
@@ -32,10 +32,8 @@
                     <label id='company_filter_label' for="company_filter">Filter by Company:</label>
                     <select id="company_filter" name="company_filter">
                         <option value="">All Companies</option>
-                        <option value="WeBank X">WeBank X</option>
-                        <option value="NauR">NauR</option>
-                        <option value="Pareto P">Pareto P</option>
-                        <option value="FidoMS">FidoMS</option>
+                        <option value="Form Category 1">Form Category 1</option>
+                        <option value="Form Category 2">Form Category 2</option>
                     </select>     
                     <button type="submit" class="btn btn-white btn-just-icon">
                         <i class="material-icons">search</i>
