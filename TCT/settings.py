@@ -66,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    'csp.middleware.CSPMiddleware',
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
@@ -211,3 +212,16 @@ COMPRESS_PRECOMPILERS = (
 )
 
 STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
+
+
+## CSP ## 
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'",)
+CSP_FRAME_SRC = ("'self'",)
+CSP_OBJECT_SRC = ("'self'",)
+CSP_MEDIA_SRC = ("'self'",)
+# CSP_SCRIPT_SRC = ("'self'", "")

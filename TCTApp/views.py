@@ -1110,7 +1110,7 @@ def request_edit(request):
     # Create a form instance with initial data
     form = RequestEditForm(initial={'record_ID': record_id, 'name': f"{user.first_name} {user.last_name}", 'user_id': user.id})
     
-    # Check if the request method is POST (i.e., form submission)
+    # Check if the request method is POST 
     if request.method == 'POST':
         # Create a form instance with the POST data
         form = RequestEditForm(request.POST)
@@ -1148,10 +1148,10 @@ def request_edit(request):
 def view_records(request):
     user = request.user
     user_id = user.uuid
-    search_query = request.GET.get('search_query')
-    company_filter = request.GET.get('company_filter')
-    start = request.GET.get('start_date')
-    end = request.GET.get('end_date')
+    search_query = request.GET.get('search_query', '').strip()
+    company_filter = request.GET.get('company_filter', '').strip()
+    start = request.GET.get('start_date', '').strip()
+    end = request.GET.get('end_date', '').strip()
 
     query = Q(user=user_id)
     
@@ -1293,7 +1293,7 @@ def resume_tasks(request):
     user = request.user
     
     # Get the record ID from the request's GET parameters
-    record_id = request.GET.get('record_id')
+    record_id = request.GET.get('record_id', '').strip()
     
     # Initialize task_company to None
     task_company = None
