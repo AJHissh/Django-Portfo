@@ -66,7 +66,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    'csp.middleware.CSPMiddleware',
+    # 'csp.middleware.CSPMiddleware',
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
@@ -74,7 +74,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
 ROOT_URLCONF = "TCT.urls"
@@ -218,13 +218,13 @@ STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
 
 
 ## CSP ## 
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'",)
-CSP_IMG_SRC = ("'self'",)
-CSP_FONT_SRC = ("'self'",)
-CSP_CONNECT_SRC = ("'self'",)
-CSP_FRAME_SRC = ("'self'",)
-CSP_OBJECT_SRC = ("'self'",)
-CSP_MEDIA_SRC = ("'self'",)
-# CSP_SCRIPT_SRC = ("'self'", "")
+# CSP_DEFAULT_SRC = ("'self'",)
+# CSP_SCRIPT_SRC = ("'self'",)
+# CSP_STYLE_SRC = ("'self'",)
+# CSP_IMG_SRC = ("'self'",)
+# CSP_FONT_SRC = ("'self'",)
+# CSP_CONNECT_SRC = ("'self'",)
+# CSP_FRAME_SRC = ("'self'",)
+# CSP_OBJECT_SRC = ("'self'",)
+# CSP_MEDIA_SRC = ("'self'",)
+# CSP_SCRIPT_SRC = ("'self'", "https://themesberg.com/product/admin-dashboard/volt-bootstrap-5-dashboard", "https://www.creative-tim.com")

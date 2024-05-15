@@ -25,6 +25,7 @@ from django.http import Http404
 from django.apps import apps
 from django.shortcuts import get_object_or_404, render, redirect
 from django.forms import modelform_factory
+from django.contrib.auth.forms import AuthenticationForm
 from django.db.models.fields import UUIDField
 from uuid import UUID
 from simple_history.utils import get_history_manager_for_model
@@ -89,8 +90,8 @@ def index(request):
     Categorytwo_count = 0
     Categoryone_count = 0
     total_form_completes = 0
-    task_dates = defaultdict(list)  # Dictionary to store task counts per date
-
+    task_dates = defaultdict(list)
+    
     # Excluded models from calculations
     excluded_models = ['RequestEdit', 'User', 'HistoricalCategorytwo', 'HistoricalCategorytwo2','HistoricalCategorytwo3','HistoricalCategoryone', 'HistoricalCategoryone2','HistoricalCategoryone3']
     
