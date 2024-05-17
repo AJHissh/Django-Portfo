@@ -162,9 +162,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = (
-#     os.path.join(CORE_DIR, 'TCTApp/static'),
-# )
+STATICFILES_DIRS = (
+    os.path.join(CORE_DIR, 'TCTApp/static'),
+)
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

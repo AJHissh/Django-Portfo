@@ -8,6 +8,10 @@
 } */
 
 
+#login_form_buttons {
+  margin-top: 1.5vh !important;
+}
+
 .project-title {
   font-size: 30px !important;
   margin-top: 2.5vh;

@@ -4,6 +4,11 @@
 
 }
 
+
+#login_form_buttons {
+  margin-top: 1.5vh !important;
+}
+
 #login-form .cards {
   border-radius: 25px;
 

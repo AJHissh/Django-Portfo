@@ -114,9 +114,7 @@
                 </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-content">
-                <div class="card-body">
+            <div id='card-tasks' class="card">              
                     <div class="align-self-center">
                       <i class="icon-support primary font-large-2 float-right"></i>
                     </div>
@@ -132,7 +130,9 @@
                     <button type="submit">Apply Filter</button>
                     <button type="button" id="clear-filters">Clear All Filters</button>
                   </form>
-                  <img src="data:image/png;base64,{{ graph }}" alt="Form Completion Data">
+                  <center>
+                  <img id="graph-dash" src="data:image/png;base64,{{ graph }}" alt="Form Completion Data">]
+                </center>
                 </div>
               </div>
             </div>
@@ -190,7 +190,7 @@
                         <span class="text-muted">Remember me</span>
                       </label>
                     </div>
-                    <div class="text-center">
+                    <div id="login_form_buttons" class="text-center">
                       <input id='login-submit' class="btn btn-primary" type="submit" value="Login">
                       <a id='login-submit' class="btn btn-primary" href="{% url 'register' %}" value="Register">Register</a>
                       <a id='guest-login-link' class="btn btn-primary" href="{% url 'login' %}?guest_login=1">Login as Guest</a>
