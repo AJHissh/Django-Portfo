@@ -1239,7 +1239,7 @@ def view_records(request):
     data = [list(row) for row in data]
 
     for row in data:
-        del row[4]
+        # del row[4]
         del row[1]
 
     try:

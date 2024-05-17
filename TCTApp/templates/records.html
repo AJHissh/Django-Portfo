@@ -99,33 +99,36 @@
                         </a>
                     </th>
                     <th class="sortable" data-column="5">
-                        Date Today
-                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=3&reverse_sort={% if sort_column == 3 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
-                            <span class="sort-icon{% if sort_column == 3 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
-                        </a>
-                    </th>   
+                        Elapsed Time
+                      </th>
                     <th class="sortable" data-column="6">
-                        Month Performed
-                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=4&reverse_sort={% if sort_column == 4 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                        Date Performed}
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=3&reverse_sort={% if sort_column == 4 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
                             <span class="sort-icon{% if sort_column == 4 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
                         </a>
+                    </th>   
+                    <th class="sortable" data-column="7">
+                        Month Performed
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=4&reverse_sort={% if sort_column == 5 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 5 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        </a>
                     </th>
-                      <th class="sortable" data-column="7">
+                      <th class="sortable" data-column="8">
                         Record Number
                       </th>
-                      <th class="sortable" data-column="8">
+                      <th class="sortable" data-column="9">
                         Choose Company
                       </th>
-                      <th class="sortable" data-column="9">
+                      <th class="sortable" data-column="10">
                         Choose Segment
                       </th>
-                      <th class="sortable" data-column="10">
+                      <th class="sortable" data-column="11">
                         Choose Task
                       </th>
-                      <th class="sortable" data-column="11">
+                      <th class="sortable" data-column="12">
                         Completion Status
-                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=9&reverse_sort={% if sort_column == 9 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
-                            <span class="sort-icon{% if sort_column == 9 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
+                        <a href="{% url 'view_records' %}?page={{ data.number }}&sort_column=10&reverse_sort={% if sort_column == 10 %}{% if reverse_sort %}false{% else %}true{% endif %}{% else %}false{% endif %}{% if company_filter %}&company_filter={{ company_filter }}{% endif %}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if start %}&start_date={{ start }}{% endif %}{% if end %}&end_date={{ end }}{% endif %}">
+                            <span class="sort-icon{% if sort_column == 10 %}{% if reverse_sort %} asc{% else %} desc{% endif %}{% elif reverse_sort %} up{% endif %}">&nbsp;</span>
                         </a>
                     </th>
                     </tr>
@@ -138,7 +141,7 @@
                       <tr>
                           <td id="frozen-column">{{ forloop.counter0|add:start_index }}</td>
                           <td class="button-container">
-                              <a href="{% url 'request_edit' %}?record_id={{ page.5 }}">
+                              <a href="{% url 'request_edit' %}?record_id={{ page.6 }}">
                                   <button type="button" id='request-change'>
                                       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                                           <path d="M0 0h24v24H0z" fill="none" />
@@ -146,7 +149,7 @@
                                       </svg>
                                   </button>
                               </a>
-                              <a href="{% url 'view_history' %}?record_id={{ page.5 }}">
+                              <a href="{% url 'view_history' %}?record_id={{ page.6 }}">
                                   <button type="button" id='view-history'>
                                       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                                           <path d="M0 0h24v24H0z" fill="none" />
@@ -154,8 +157,8 @@
                                       </svg>
                                   </button>
                               </a>
-                              {% if page.9 == False %}
-                              <a href="{% url 'resume_tasks' %}?record_id={{ page.5 }}">
+                              {% if page.10 == False %}
+                              <a href="{% url 'resume_tasks' %}?record_id={{ page.6 }}">
                                   <button type="button" id="resume-button" data-record-id="{{ page.5 }}">
                                       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                                           <path d="M0 0h24v24H0z" fill="none" />
