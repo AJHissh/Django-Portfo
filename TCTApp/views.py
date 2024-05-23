@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
@@ -14,14 +14,12 @@ from django.contrib.sites.shortcuts import get_current_site
 from .tokens import account_activation_token  
 from django.core.mail import EmailMessage
 import logging
-from django.utils import timezone
 from datetime import datetime, timedelta, date
 from itertools import chain
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.template.context_processors import csrf
-from django.http import Http404
 from django.apps import apps
 from django.shortcuts import get_object_or_404, render, redirect
 from django.forms import modelform_factory
@@ -34,16 +32,10 @@ import csv
 import pytz
 from pytz import timezone as pytz_timezone
 from django.core.cache import cache
-from django.http import JsonResponse
 from pathlib import Path
-from django.views.decorators.csrf import ensure_csrf_cookie
 # import gspread
 # from oauth2client.service_account import ServiceAccountCredentials
 import json
-from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.apps import apps
 import matplotlib.pyplot as plt
 import base64
 import io
