@@ -162,7 +162,6 @@ function startTimer(view) {
   }
 
   // End the timer and submit the form
-  // End the timer and submit the form
   function endTimer(view) {
     var timerDiv = document.getElementById('timer');
     var elapsedTime = timerDiv.innerHTML; // Get the elapsed time from the timer display
