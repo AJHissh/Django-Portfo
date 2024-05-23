@@ -4,7 +4,6 @@ const form = document.getElementById('record-edit-form');
 
 // Add event listener to the submit button
 submitButton.addEventListener('click', () => {
-  // Display a confirmation dialog before submitting the form
   if (confirm('Are you sure you want to edit this record?')) {
     form.submit();
   }
