@@ -227,4 +227,4 @@ STATICFILES_STORAGE = 'compressor.storage.CompressorFileStorage'
 # CSP_FRAME_SRC = ("'self'",)
 # CSP_OBJECT_SRC = ("'self'",)
 # CSP_MEDIA_SRC = ("'self'",)
-# CSP_SCRIPT_SRC = ("'self'", "https://themesberg.com/product/admin-dashboard/volt-bootstrap-5-dashboard", "https://www.creative-tim.com")
+# CSP_SCRIPT_SRC = ("'self'")
