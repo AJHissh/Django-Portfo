@@ -8,11 +8,8 @@ from .models import *
 from django import forms
 import pytz
 from simple_history.admin import SimpleHistoryAdmin
-from django.contrib import admin
-from django import forms
 from django.contrib.admin.models import LogEntry
-from django.urls import reverse
-from django.urls import path
+from django.urls import reverse, path
 
 
 ##----------------------------------------------##
